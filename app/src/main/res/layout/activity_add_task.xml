@@ -74,8 +74,54 @@
                 android:hint="Task Description"
                 android:inputType="textMultiLine"
                 android:layout_marginBottom="24dp" />
+
+            <!-- created a horizontal linear layout to keep colors side by side -->
+            <LinearLayout
+                android:id="@+id/colorOptionsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="24dp">
+
+                <View
+                    android:id="@+id/colorRed"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#F44336"
+                    android:tag="#F44336" />
+
+                <View
+                    android:id="@+id/colorGreen"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#4CAF50"
+                    android:tag="#4CAF50" />
+
+                <View
+                    android:id="@+id/colorBlue"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#2196F3"
+                    android:tag="#2196F3" />
+
+                <View
+                    android:id="@+id/colorYellow"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#FFEB3B"
+                    android:tag="#FFEB3B" />
+
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+
 
     <!-- Back Button -->
     <Button
