@@ -13,6 +13,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lab2report.Task
+import com.example.lab2report.TaskAdapter
 
 class MainActivity : AppCompatActivity() {
 

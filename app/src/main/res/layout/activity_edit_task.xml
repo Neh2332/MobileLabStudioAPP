@@ -139,13 +139,13 @@
             android:layout_centerInParent="true"
             android:layout_marginBottom="16dp" />
 
-        <!-- Done Button -->
+        <!-- Update Button -->
         <Button
-            android:id="@+id/btnDone"
+            android:id="@+id/btnUpdate"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:text="✓"
-            android:textSize="24sp"
+            android:text="Update"
+            android:textSize="18sp"
             android:textColor="@android:color/white"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="16dp"
