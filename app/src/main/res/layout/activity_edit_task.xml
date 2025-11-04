@@ -118,10 +118,6 @@
 
         <!-- Back Button -->
 
-        <!-- Delete Button -->
-
-        <!-- Update Button -->
-
         <Button
             android:id="@+id/btnBack"
             android:layout_width="70dp"
@@ -133,6 +129,8 @@
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
+
+        <!--- Delete Button -->
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="110dp"
@@ -143,6 +141,7 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
+        <!--- Updates Button -->
         <Button
             android:id="@+id/btnUpdate"
             android:layout_width="110dp"
