@@ -7,7 +7,9 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
@@ -15,6 +17,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class EditTaskActivity : AppCompatActivity() {
@@ -23,6 +29,7 @@ class EditTaskActivity : AppCompatActivity() {
     private var taskId: Int = -1
     private var selectedColor: String = "#FFFFFF"
     private var selectedImageUri: Uri? = null
+    private var currentPhotoPath: String? = null
 
     private lateinit var etTaskTitle: EditText
     private lateinit var etDeadline: EditText
@@ -142,10 +149,18 @@ class EditTaskActivity : AppCompatActivity() {
     }
 
     private fun checkGalleryPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE), GALLERY_PERMISSION_CODE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES), GALLERY_PERMISSION_CODE)
+            } else {
+                openGallery()
+            }
         } else {
-            openGallery()
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), GALLERY_PERMISSION_CODE)
+            } else {
+                openGallery()
+            }
         }
     }
 
@@ -169,7 +184,21 @@ class EditTaskActivity : AppCompatActivity() {
     private fun openCamera() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(takePictureIntent, IMAGE_CAPTURE_CODE)
+            var photoFile: File? = null
+            try {
+                photoFile = createImageFile()
+            } catch (ex: IOException) {
+                // Handle error
+            }
+            if (photoFile != null) {
+                val photoURI: Uri = FileProvider.getUriForFile(
+                    this,
+                    "com.example.lab2report.provider",
+                    photoFile
+                )
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, IMAGE_CAPTURE_CODE)
+            }
         }
     }
 
@@ -188,31 +217,25 @@ class EditTaskActivity : AppCompatActivity() {
                     ivTaskImage.visibility = View.VISIBLE
                 }
                 IMAGE_CAPTURE_CODE -> {
-                    val photo = data?.extras?.get("data") as? android.graphics.Bitmap
-                    photo?.let {
-                        val contentResolver = contentResolver
-                        val contentValues = android.content.ContentValues().apply {
-                            put(MediaStore.Images.Media.DISPLAY_NAME, "task_image_${System.currentTimeMillis()}.jpg")
-                            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                        }
-                        val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-                        imageUri?.let {
-                            selectedImageUri = it
-                            ivTaskImage.setImageURI(selectedImageUri)
-                            ivTaskImage.visibility = View.VISIBLE
-                            try {
-                                val outputStream = contentResolver.openOutputStream(it)
-                                outputStream?.let {
-                                    photo.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, it)
-                                    it.close()
-                                }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
+                    val file = File(currentPhotoPath!!)
+                    selectedImageUri = Uri.fromFile(file)
+                    ivTaskImage.setImageURI(selectedImageUri)
+                    ivTaskImage.visibility = View.VISIBLE
                 }
             }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            currentPhotoPath = absolutePath
         }
     }
 

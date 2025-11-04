@@ -15,6 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab2report.Task
 import com.example.lab2report.TaskAdapter
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import android.widget.Toast
+import android.net.Uri
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: TaskAdapter
     private var taskList = mutableListOf<Task>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
