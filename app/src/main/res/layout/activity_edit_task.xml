@@ -117,39 +117,42 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Back Button -->
+
+        <!-- Delete Button -->
+
+        <!-- Update Button -->
+
         <Button
             android:id="@+id/btnBack"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:text="←"
-            android:textSize="24sp"
-            android:textColor="@android:color/white"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginStart="18dp"
+            android:layout_marginBottom="16dp"
+            android:text="←"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
 
-        <!-- Delete Button -->
         <Button
             android:id="@+id/btnDelete"
-            android:layout_width="70dp"
+            android:layout_width="110dp"
             android:layout_height="70dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="152dp"
             android:text="Delete"
-            android:textSize="18sp"
             android:textColor="@android:color/white"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="16dp" />
+            android:textSize="18sp" />
 
-        <!-- Update Button -->
         <Button
             android:id="@+id/btnUpdate"
-            android:layout_width="70dp"
+            android:layout_width="110dp"
             android:layout_height="70dp"
-            android:text="Update"
-            android:textSize="18sp"
-            android:textColor="@android:color/white"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="16dp"
+            android:text="Update"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 
