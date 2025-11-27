@@ -19,6 +19,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Sensor Stats -->
+    <TextView
+        android:id="@+id/tvSensorStats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sensor Data..."
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
     <!-- Search Box -->
     <EditText
         android:id="@+id/etSearch"
@@ -27,7 +40,7 @@
         android:hint="Search tasks"
         android:padding="12dp"
         android:background="@android:drawable/edit_text"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvSensorStats"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp" />
