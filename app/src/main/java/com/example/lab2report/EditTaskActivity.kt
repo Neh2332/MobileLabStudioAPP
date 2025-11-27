@@ -76,10 +76,15 @@ class EditTaskActivity : AppCompatActivity() {
             it.description?.let { etTaskDescription.setText(it) }
             selectedColor = it.color
             applyColorToViews(selectedColor)
-            it.imageUri?.let {
-                selectedImageUri = Uri.parse(it)
-                ivTaskImage.setImageURI(selectedImageUri)
-                ivTaskImage.visibility = View.VISIBLE
+            it.imageUri?.let { uriString ->
+                selectedImageUri = Uri.parse(uriString)
+                try {
+                    ivTaskImage.setImageURI(selectedImageUri)
+                    ivTaskImage.visibility = View.VISIBLE
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(this, "Error loading image", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -192,8 +197,18 @@ class EditTaskActivity : AppCompatActivity() {
             when (requestCode) {
                 IMAGE_PICK_GALLERY_CODE -> {
                     selectedImageUri = data?.data
-                    ivTaskImage.setImageURI(selectedImageUri)
-                    ivTaskImage.visibility = View.VISIBLE
+                    selectedImageUri?.let { uri ->
+                        try {
+                            contentResolver.takePersistableUriPermission(
+                                uri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            )
+                        } catch (e: SecurityException) {
+                            e.printStackTrace()
+                        }
+                        ivTaskImage.setImageURI(uri)
+                        ivTaskImage.visibility = View.VISIBLE
+                    }
                 }
                 IMAGE_CAPTURE_CODE -> {
                     val photo = data?.extras?.get("data") as? android.graphics.Bitmap

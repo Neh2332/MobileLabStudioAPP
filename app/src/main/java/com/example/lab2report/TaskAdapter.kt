@@ -44,7 +44,13 @@ class TaskAdapter(private var tasks: List<Task>) :
         // Load image if URI is not null
         task.imageUri?.let {
             holder.taskImageView.visibility = View.VISIBLE
-            holder.taskImageView.setImageURI(Uri.parse(it))
+            try {
+                holder.taskImageView.setImageURI(Uri.parse(it))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Optionally set a placeholder or error image, or hide the view
+                // holder.taskImageView.setImageResource(R.drawable.error_image) 
+            }
         } ?: run {
             holder.taskImageView.visibility = View.GONE
         }
